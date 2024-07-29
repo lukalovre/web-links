@@ -10,74 +10,9 @@
 		<TabControl Margin="5">
 			<TabItem Header="Main">
 				<TabControl TabStripPlacement="Left">
-					<TabItem Header="Music">
-						<v:MusicView DataContext="{Binding MusicViewModel}" />
-					</TabItem>
-					<TabItem Header="Songs">
-						<v:SongsView DataContext="{Binding SongsViewModel}" />
-					</TabItem>
 					<TabItem Header="Games">
 						<v:GamesView DataContext="{Binding GamesViewModel}" />
 					</TabItem>
-					<TabItem Header="Books">
-						<v:BooksView DataContext="{Binding BooksViewModel}" />
-					</TabItem>
-					<TabItem Header="TV Shows">
-						<v:TVShowsView DataContext="{Binding TVShowsViewModel}" />
-					</TabItem>
-					<TabItem Header="Movies">
-						<v:MoviesView DataContext="{Binding MoviesViewModel}" />
-					</TabItem>
-					<TabItem Header="Clips">
-						<v:ClipsView DataContext="{Binding ClipsViewModel}" />
-					</TabItem>
-					<TabItem Header="Standup">
-						<v:StandupView DataContext="{Binding StandupViewModel}" />
-					</TabItem>
-					<TabItem Header="Comics">
-						<v:ComicsView DataContext="{Binding ComicsViewModel}" />
-					</TabItem>
-					<TabItem Header="Concerts">
-						<v:ConcertsView DataContext="{Binding ConcertsViewModel}" />
-					</TabItem>
-					<TabItem Header="Zoo">
-						<v:ZooView DataContext="{Binding ZooViewModel}" />
-					</TabItem>
-					<TabItem Header="Locations">
-						<v:LocationsView DataContext="{Binding LocationsViewModel}" />
-					</TabItem>
-					<TabItem Header="Theatre">
-						<v:TheatreView DataContext="{Binding TheatreViewModel}" />
-					</TabItem>
-					<TabItem Header="Paintings">
-						<v:PaintingsView DataContext="{Binding PaintingsViewModel}" />
-					</TabItem>
-					<TabItem Header="Magazines">
-						<v:MagazinesView DataContext="{Binding MagazinesViewModel}" />
-					</TabItem>
-					<TabItem Header="Boardgames">
-						<v:BoardgamesView DataContext="{Binding BoardgamesViewModel}" />
-					</TabItem>
-					<TabItem Header="Pinball">
-						<v:PinballView DataContext="{Binding PinballViewModel}" />
-					</TabItem>
-					<TabItem Header="Classical">
-						<v:ClassicalView DataContext="{Binding ClassicalViewModel}" />
-					</TabItem>
-				</TabControl>
-			</TabItem>
-			<TabItem Header="My">
-				<TabControl TabStripPlacement="Left">
-					<TabItem Header="Work" Width="150">
-						<v:WorkView DataContext="{Binding WorkViewModel}" />
-					</TabItem>
-					<TabItem Header="D&amp;D">
-						<v:DnDView DataContext="{Binding DnDViewModel}" />
-					</TabItem>
-					<TabItem Header="People">
-						<v:PeopleView DataContext="{Binding PeopleViewModel}" />
-					</TabItem>
-					<TabItem Header="Locations" />
 				</TabControl>
 			</TabItem>
 			<TabItem Header="Stats" />
