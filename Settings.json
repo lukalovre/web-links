@@ -1,0 +1,91 @@
+{
+  "DatasourcePath": "/home/luka/Documents/Data",
+  "ItemSettings": {
+    "Song": {
+      "NewItemAmountOverride": -1,
+      "DefaultNewItemChapter": null,
+      "DefaultNewItemCompleted": true,
+      "DateTimeFilter": null,
+      "DefaultNewItemRating": 3,
+      "DefaultNewItemPlatform": "Streaming",
+      "DefaultNewItemBookmakred": true,
+      "OpenItemLinkUrl": true
+    },
+    "Book": {
+      "DefaultNewItemChapter": null,
+      "AmountToMinutesModifier": 2.0,
+      "IsFullAmountDefaultValue": false,
+      "AmountVerb": "pages",
+      "AmountType": "Pages"
+    },
+    "Comic": {
+      "AmountToMinutesModifier": 0.3,
+      "IsFullAmountDefaultValue": false,
+      "AmountVerb": "pages",
+      "AmountType": "Pages"
+    },
+    "Game": {
+      "DefaultNewItemChapter": null
+    },
+    "Location": {
+      "DateTimeFilter": "min"
+    },
+    "Movie": {
+      "DefaultNewItemChapter": null,
+      "NewItemAmountOverride": -1
+    },
+    "Music": {
+      "DefaultNewItemPlatform": "Streaming",
+      "OpenItemLinkUrl": true,
+      "DateTimeFilter": "-24",
+      "NewItemAmountOverride": -1,
+      "DefaultNewItemChapter": null
+    },
+    "Standup": {
+      "DefaultNewItemChapter": null,
+      "NewItemAmountOverride": -1,
+      "DefaultNewItemCompleted": true,
+      "DefaultNewItemPlatform": "Streaming"
+    },
+    "Theatre": {
+      "DefaultNewItemChapter": null,
+      "NewItemAmountOverride": -1,
+      "DefaultNewItemCompleted": true,
+      "DateTimeFilter": "min"
+    },
+    "TVShow": {
+      "DefaultAddAmount": -1,
+      "NewItemAmountOverride": -1
+    },
+    "Work": {
+      "DefaultNewItemChapter": null
+    },
+    "Zoo": {
+      "DefaultNewItemChapter": null,
+      "DateTimeFilter": "min"
+    },
+    "Magazine": {
+      "AmountToMinutesModifier": 0.1,
+      "IsFullAmountDefaultValue": false,
+      "AmountVerb": "pages",
+      "AmountType": "Pages",
+      "DateTimeFilter": "min",
+      "DefaultAddAmount": -1
+    },
+    "Boardgame": {
+      "IsFullAmountDefaultValue": false,
+      "DateTimeFilter": "min",
+      "DefaultNewItemChapter": null
+    },
+    "Painting": {
+      "DefaultNewItemChapter": null
+    },
+    "Concert": {
+      "DefaultNewItemChapter": null,
+      "DateTimeFilter": "min"
+    },
+    "Person": {
+      "ShowYearFilter": false
+    }
+  }
+}

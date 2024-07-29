@@ -1,0 +1,139 @@
+<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:vm="using:AvaloniaApplication1.ViewModels" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:uc="clr-namespace:AvaloniaApplication1.Views;assembly=AvaloniaApplication1" mc:Ignorable="d" x:DataType="vm:PeopleViewModel" x:Class="AvaloniaApplication1.Views.PeopleView" xmlns:view="using:AvaloniaApplication1.Views">
+	<DockPanel>
+		<TabControl>
+			<TabItem Header="All">
+				<DockPanel>
+					<view:GridFilterView DataContext="{Binding GridFilterViewModel}" DockPanel.Dock="Top"/>
+					<DataGrid Margin="1" Width="300" ItemsSource="{Binding PeopleGrid}" IsReadOnly="True" GridLinesVisibility="All" BorderThickness="2" BorderBrush="Teal" SelectedItem="{Binding SelectedPersonGridItem}">
+						<DataGrid.Columns>
+							<DataGridTextColumn Binding="{Binding FirstName}" Header="First name" Width="100" />
+							<DataGridTextColumn Binding="{Binding LastName}" Header="Last name" Width="100"/>
+							<DataGridTextColumn Binding="{Binding Nickname}" Header="Nickname" Width="100"/>
+						</DataGrid.Columns>
+					</DataGrid>
+				</DockPanel>
+			</TabItem>
+		</TabControl>
+		<TabControl Margin="5">
+			<TabItem Header="Info">
+				<ScrollViewer>
+					<StackPanel>
+						<StackPanel Orientation="Horizontal">
+							<Button>
+								<Image Source="{Binding Image}" Width="200" Height="200" />
+							</Button>
+							<StackPanel>
+								<TextBlock Text="   "/>
+							</StackPanel>
+							<StackPanel>
+								<StackPanel Orientation="Horizontal">
+									<TextBox Text="{Binding SelectedItem.FirstName}" Width="150"/>
+									<TextBlock Text=" FirstName" VerticalAlignment="Center"/>
+								</StackPanel>
+								<StackPanel Orientation="Horizontal">
+									<TextBox Text="{Binding SelectedItem.LastName}" Width="150"/>
+									<TextBlock Text=" LastName" VerticalAlignment="Center"/>
+								</StackPanel>
+								<StackPanel Orientation="Horizontal">
+									<TextBox Text="{Binding SelectedItem.Nickname}" Width="150"/>
+									<TextBlock Text=" Nickname" VerticalAlignment="Center"/>
+								</StackPanel>
+								<StackPanel Orientation="Horizontal">
+									<TextBox Text="{Binding SelectedItem.Phone}" Width="150"/>
+									<TextBlock Text=" Phone" VerticalAlignment="Center"/>
+								</StackPanel>
+								<StackPanel Orientation="Horizontal">
+									<TextBox Text="{Binding SelectedItem.Email}" Width="150"/>
+									<TextBlock Text=" Email" VerticalAlignment="Center"/>
+								</StackPanel>
+							</StackPanel>
+							<StackPanel>
+								<TextBlock Text="      "/>
+							</StackPanel>
+							<StackPanel>
+								<StackPanel Orientation="Horizontal">
+									<TextBox Text="{Binding SelectedItem.Address}" Width="150"/>
+									<TextBlock Text=" Address" VerticalAlignment="Center"/>
+								</StackPanel>
+								<StackPanel Orientation="Horizontal">
+									<TextBox Text="{Binding SelectedItem.City}" Width="150"/>
+									<TextBlock Text=" City" VerticalAlignment="Center"/>
+								</StackPanel>
+								<StackPanel Orientation="Horizontal">
+									<TextBox Text="{Binding SelectedItem.Postcode}" Width="150"/>
+									<TextBlock Text=" Postcode" VerticalAlignment="Center"/>
+								</StackPanel>
+								<StackPanel Orientation="Horizontal">
+									<TextBox Text="{Binding SelectedItem.Country}" Width="150"/>
+									<TextBlock Text=" Country" VerticalAlignment="Center"/>
+								</StackPanel>
+							</StackPanel>
+						</StackPanel>
+						<view:PersonEventsView DataContext="{Binding PersonEventsViewModel}" />
+					</StackPanel>
+				</ScrollViewer>
+			</TabItem>
+			<TabItem Header="New">
+				<ScrollViewer>
+					<StackPanel>
+						<StackPanel Orientation="Horizontal">
+							<Button>
+								<Image Source="{Binding NewImage}" Width="200" Height="200" />
+							</Button>
+							<StackPanel>
+								<TextBlock Text="   "/>
+							</StackPanel>
+							<StackPanel>
+								<StackPanel Orientation="Horizontal">
+									<TextBox Text="{Binding NewItem.FirstName}" Width="150"/>
+									<TextBlock Text=" FirstName" VerticalAlignment="Center"/>
+								</StackPanel>
+								<StackPanel Orientation="Horizontal">
+									<TextBox Text="{Binding NewItem.LastName}" Width="150"/>
+									<TextBlock Text=" LastName" VerticalAlignment="Center"/>
+								</StackPanel>
+								<StackPanel Orientation="Horizontal">
+									<TextBox Text="{Binding NewItem.Nickname}" Width="150"/>
+									<TextBlock Text=" Nickname" VerticalAlignment="Center"/>
+								</StackPanel>
+								<StackPanel Orientation="Horizontal">
+									<TextBox Text="{Binding NewItem.Phone}" Width="150"/>
+									<TextBlock Text=" Phone" VerticalAlignment="Center"/>
+								</StackPanel>
+								<StackPanel Orientation="Horizontal">
+									<TextBox Text="{Binding NewItem.Email}" Width="150"/>
+									<TextBlock Text=" Email" VerticalAlignment="Center"/>
+								</StackPanel>
+							</StackPanel>
+							<StackPanel>
+								<TextBlock Text="      "/>
+							</StackPanel>
+							<StackPanel>
+								<StackPanel Orientation="Horizontal">
+									<TextBox Text="{Binding NewItem.Address}" Width="150"/>
+									<TextBlock Text=" Address" VerticalAlignment="Center"/>
+								</StackPanel>
+								<StackPanel Orientation="Horizontal">
+									<TextBox Text="{Binding NewItem.City}" Width="150"/>
+									<TextBlock Text=" City" VerticalAlignment="Center"/>
+								</StackPanel>
+								<StackPanel Orientation="Horizontal">
+									<TextBox Text="{Binding NewItem.Postcode}" Width="150"/>
+									<TextBlock Text=" Postcode" VerticalAlignment="Center"/>
+								</StackPanel>
+								<StackPanel Orientation="Horizontal">
+									<TextBox Text="{Binding NewItem.Country}" Width="150"/>
+									<TextBlock Text=" Country" VerticalAlignment="Center"/>
+								</StackPanel>
+							</StackPanel>
+						</StackPanel>
+						<Button Command="{Binding AddItemClick}" Margin="15">Add</Button>
+					</StackPanel>
+				</ScrollViewer>
+			</TabItem>
+			<TabItem Header="Edit">
+				<TextBlock Text="Event" />
+			</TabItem>
+		</TabControl>
+	</DockPanel>
+</UserControl>
