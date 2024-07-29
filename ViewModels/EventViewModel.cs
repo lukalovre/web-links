@@ -22,7 +22,6 @@ public partial class EventViewModel : ViewModelBase
         set
         {
             this.RaiseAndSetIfChanged(ref _date, value);
-            DateTimeChanged();
         }
     }
 
@@ -32,7 +31,6 @@ public partial class EventViewModel : ViewModelBase
         set
         {
             this.RaiseAndSetIfChanged(ref _time, value);
-            DateTimeChanged();
         }
     }
 
@@ -45,11 +43,7 @@ public partial class EventViewModel : ViewModelBase
     public Event SelectedEvent
     {
         get => _selectedEvent;
-        set
-        {
-            this.RaiseAndSetIfChanged(ref _selectedEvent, value);
-            SelectedEventChanged();
-        }
+        set => this.RaiseAndSetIfChanged(ref _selectedEvent, value);
     }
 
     private string _selectedPlatformType = string.Empty;
@@ -86,36 +80,20 @@ public partial class EventViewModel : ViewModelBase
         People = new PeopleSelectionViewModel();
     }
 
-    private void SelectedEventChanged()
-    {
-        if (SelectedEvent == null)
-        {
-            return;
-        }
-
-        SelectedPersonString = PeopleManager.Instance.GetDisplayNames(SelectedEvent.People);
-        People.SetPeople(SelectedEvent.People);
-    }
-
     private void CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         var events = sender as ObservableCollection<Event>;
-        SelectedEvent = events?.MaxBy(o => o.DateEnd)!;
+        SelectedEvent = events?.MaxBy(o => o.Date)!;
 
         if (SelectedEvent == null)
         {
             return;
         }
 
-        _date = SelectedEvent.DateEnd ?? DateTime.MinValue;
+        _date = SelectedEvent.Date;
         _time = _date.TimeOfDay;
 
-        SelectedPlatformType = SelectedEvent.Platform;
-        NewEventChapter = SelectedEvent.Chapter ?? 1;
     }
 
-    private void DateTimeChanged()
-    {
-        SelectedEvent.DateEnd = Date + Time;
-    }
+
 }

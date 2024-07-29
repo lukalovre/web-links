@@ -4,14 +4,14 @@ using AvaloniaApplication1.Models.Interfaces;
 
 namespace AvaloniaApplication1.Models;
 
-[Table("Games")]
-public record Game : IItem
+[Table("Links")]
+public record Link : IItem
 {
     [Key]
     public int ID { get; set; }
 
+    public string Url { get; set; } = string.Empty;
     public string Title { get; set; } = string.Empty;
-    public int Year { get; set; }
-    public string Platform { get; set; } = string.Empty;
-    public int ExternalID { get; set; }
+    public string Category { get; set; } = string.Empty;
+    public string SubCategory { get; set; } = string.Empty;
 }

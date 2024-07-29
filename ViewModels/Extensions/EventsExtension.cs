@@ -9,6 +9,6 @@ public static class EventsExtension
 {
     public static DateTime LastEventDate(this IEnumerable<Event> eventList)
     {
-        return eventList.MaxBy(o => o.DateEnd)?.DateEnd ?? DateTime.MinValue;
+        return eventList.MaxBy(o => o.Date)?.Date ?? DateTime.MinValue;
     }
 }

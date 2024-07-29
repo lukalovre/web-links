@@ -2,9 +2,9 @@ using Avalonia.Controls;
 
 namespace AvaloniaApplication1.Views;
 
-public partial class GamesView : UserControl
+public partial class LinksView : UserControl
 {
-    public GamesView()
+    public LinksView()
     {
         ViewHelper.AddConverters(Resources);
         InitializeComponent();

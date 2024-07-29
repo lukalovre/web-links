@@ -1,0 +1,70 @@
+<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:vm="using:AvaloniaApplication1.ViewModels" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:uc="clr-namespace:AvaloniaApplication1.Views;assembly=AvaloniaApplication1" mc:Ignorable="d" x:DataType="vm:LinksViewModel" x:Class="AvaloniaApplication1.Views.LinksView" xmlns:view="using:AvaloniaApplication1.Views">
+	<DockPanel>
+		<TabControl>
+			<TabItem Header="★">
+				<DockPanel>
+					<view:GridFilterView DataContext="{Binding GridFilterViewModel}" DockPanel.Dock="Top"/>
+					<DataGrid Margin="1" Width="570" ItemsSource="{Binding GridItemsBookmarked}" IsReadOnly="True" GridLinesVisibility="All" BorderThickness="2" BorderBrush="Teal" SelectedItem="{Binding SelectedGridItem}">
+						<DataGrid.Columns>
+							<DataGridTextColumn Binding="{Binding Title}" Header="Title" Width="*" />
+							<DataGridTextColumn Binding="{Binding Category}" Header="Category" Width="70" />
+							<DataGridTextColumn Binding="{Binding SubCategory}" Header="SubCategory" Width="93" />
+							<DataGridTextColumn Binding="{Binding LastDate, Converter={StaticResource DaysAgoToStringConverter}}" Header="Ago" Width="70" />
+						</DataGrid.Columns>
+					</DataGrid>
+				</DockPanel>
+			</TabItem>
+			<TabItem Header="All">
+				<DockPanel>
+					<view:GridFilterView DataContext="{Binding GridFilterViewModel}" DockPanel.Dock="Top"/>
+					<DataGrid Margin="1" Width="570" ItemsSource="{Binding GridItems}" IsReadOnly="True" GridLinesVisibility="All" BorderThickness="2" BorderBrush="Teal" SelectedItem="{Binding SelectedGridItem}">
+						<DataGrid.Columns>
+							<DataGridTextColumn Binding="{Binding Title}" Header="Title" Width="*" />
+							<DataGridTextColumn Binding="{Binding Category}" Header="Category" Width="70" />
+							<DataGridTextColumn Binding="{Binding SubCategory}" Header="SubCategory" Width="93" />
+							<DataGridTextColumn Binding="{Binding LastDate, Converter={StaticResource DaysAgoToStringConverter}}" Header="Ago" Width="70" />
+						</DataGrid.Columns>
+					</DataGrid>
+				</DockPanel>
+			</TabItem>
+		</TabControl>
+		<TabControl Margin="5">
+			<TabItem Header="Info">
+				<ScrollViewer>
+					<StackPanel>
+						<TextBlock Text="{Binding SelectedItem.Title}" FontSize="20" FontWeight="Bold" />
+						<Button>
+							<Image Source="{Binding Image}" Width="350" Height="466" />
+						</Button>
+						<view:EventView DataContext="{Binding EventViewModel}" />
+					</StackPanel>
+				</ScrollViewer>
+			</TabItem>
+			<TabItem Header="New">
+				<ScrollViewer>
+					<StackPanel>
+						<StackPanel Orientation="Horizontal">
+							<Button Command="{Binding AddItemClick}" Margin="15">
+								Add
+							</Button>
+							<TextBox Watermark="Paste url" Text="{Binding InputUrl}" Margin="15" />
+						</StackPanel>
+						<StackPanel>
+							<TextBox Watermark="Title" Text="{Binding NewItem.Title}" Width="150" />
+						</StackPanel>
+						<Button>
+							<Image Source="{Binding NewImage}" />
+						</Button>
+						<StackPanel Orientation="Horizontal">
+							<CheckBox IsChecked="{Binding UseNewDate}" />
+							<TextBox Text="{Binding NewDate, Converter={StaticResource DateTimeToStringConverter}, ConverterParameter=yyyy-MM-dd HH:mm:ss}}" Width="200" />
+						</StackPanel>
+					</StackPanel>
+				</ScrollViewer>
+			</TabItem>
+			<TabItem Header="Edit">
+				<TextBlock Text="Event" />
+			</TabItem>
+		</TabControl>
+	</DockPanel>
+</UserControl>

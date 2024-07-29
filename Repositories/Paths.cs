@@ -30,7 +30,7 @@ public static class Paths
 
     private static string GetRootPath()
     {
-        var rootPath = Path.Combine(Settings.Instance.DatasourcePath, "Events");
+        var rootPath = Path.Combine(Settings.Instance.DatasourcePath, "Links");
         CreatePath(rootPath);
         return rootPath;
     }

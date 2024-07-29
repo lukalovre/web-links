@@ -72,32 +72,13 @@ public class ItemViewModel<TItem, TGridItem> : ViewModelBase, IDataGrid where TI
     private TItem _selectedItem = default!;
 
     private int _gridCountItemsBookmarked;
-    private int _addAmount;
-    private string _addAmountString = string.Empty;
 
     public EventViewModel EventViewModel { get; }
     public GridFilterViewModel GridFilterViewModel { get; }
 
-    public int AddAmount
-    {
-        get => _addAmount;
-        set
-        {
-            this.RaiseAndSetIfChanged(ref _addAmount, value);
-            _addAmount = SetAmount(value);
-        }
-    }
-
-    private int _newAmount;
     private string _inputUrl = string.Empty;
     private bool _isFullAmount;
     private int _newItemAmount;
-
-    public string AddAmountString
-    {
-        get => _addAmountString;
-        set => this.RaiseAndSetIfChanged(ref _addAmountString, value);
-    }
 
     public bool UseNewDate
     {
@@ -187,22 +168,6 @@ public class ItemViewModel<TItem, TGridItem> : ViewModelBase, IDataGrid where TI
         }
     }
 
-    private int SetAmount(int value)
-    {
-        if (SelectedItem is null)
-        {
-            return 0;
-        }
-
-        var events = _eventList.Where(o => o.ItemID == SelectedItem.ID);
-        var currentAmount = IsFullAmount ? 0 : GetItemAmount(events);
-        var newAmount = value - currentAmount;
-
-        _newAmount = newAmount;
-        AddAmountString = $"    Adding {newAmount} {_settings.AmountVerb}";
-        return value;
-    }
-
     private async void InputUrlChanged()
     {
         NewItem = await _external.GetItem(InputUrl);
@@ -210,10 +175,7 @@ public class ItemViewModel<TItem, TGridItem> : ViewModelBase, IDataGrid where TI
         NewImage = FileRepsitory.GetImageTemp<TItem>();
         NewEvent = new Event
         {
-            Rating = _settings.DefaultNewItemRating,
-            Platform = _settings.DefaultNewItemPlatform,
-            Completed = _settings.DefaultNewItemCompleted,
-            Bookmakred = _settings.DefaultNewItemBookmakred
+
         };
 
         _inputUrl = string.Empty;
@@ -240,38 +202,13 @@ public class ItemViewModel<TItem, TGridItem> : ViewModelBase, IDataGrid where TI
 
     private void AddItemClickAction()
     {
-        var overrideAmount = _settings.NewItemAmountOverride;
-
-        if (overrideAmount == -1)
-        {
-            overrideAmount = (NewItem as IRuntime)?.Runtime ?? 0;
-        }
-
-        var amount = overrideAmount ?? NewItemAmount;
-        var dateEnd = UseNewDate ? NewDate : DateTime.Now;
-        var people = People.GetPeople();
-
-        var amountType = _settings.AmountType ?? NewEvent.AmountType;
-
         NewEvent ??= new Event();
-        var chapter = NewEvent.Chapter ?? _settings.DefaultNewItemChapter;
 
         var newEvent = new Event
         {
             ID = 0,
             ItemID = 0,
-            ExternalID = string.Empty,
-            DateEnd = dateEnd,
-            Rating = NewEvent.Rating,
-            Bookmakred = NewEvent.Bookmakred,
-            Chapter = chapter,
-            Amount = amount,
-            AmountType = amountType,
-            Completed = NewEvent.Completed,
-            Comment = NewEvent.Comment,
-            People = people,
-            Platform = NewEvent.Platform,
-            LocationID = NewEvent.LocationID
+            Date = DateTime.Now
         };
 
         _datasource.Add(NewItem, newEvent);
@@ -282,41 +219,17 @@ public class ItemViewModel<TItem, TGridItem> : ViewModelBase, IDataGrid where TI
 
     private void AddEventClickAction()
     {
-        var lastEvent = Events.MaxBy(o => o.DateEnd) ?? Events.LastOrDefault();
+        var lastEvent = Events.MaxBy(o => o.Date) ?? Events.LastOrDefault();
 
-        var amount = _newAmount == 0
-        ? lastEvent?.Amount ?? 0
-        : _newAmount;
-
-        var dateEnd = !EventViewModel.IsEditDate
+        var date = !EventViewModel.IsEditDate
         ? DateTime.Now
-        : EventViewModel?.SelectedEvent?.DateEnd ?? DateTime.Now;
-
-        var people = EventViewModel?.People.GetPeople() ?? string.Empty;
-
-        int? chapter = null;
-
-        if (_settings.DefaultNewItemChapter is not null)
-        {
-            chapter = EventViewModel?.NewEventChapter ?? _settings.DefaultNewItemChapter;
-        }
+        : EventViewModel?.SelectedEvent?.Date ?? DateTime.Now;
 
         var newEvent = new Event
         {
             ID = 0,
             ItemID = 0,
-            ExternalID = string.Empty,
-            DateEnd = dateEnd,
-            Rating = lastEvent?.Rating ?? 0,
-            Bookmakred = lastEvent?.Bookmakred ?? false,
-            Chapter = chapter,
-            Amount = amount,
-            AmountType = lastEvent?.AmountType ?? 0,
-            Completed = lastEvent?.Completed ?? false,
-            Comment = lastEvent?.Comment ?? string.Empty,
-            People = people,
-            Platform = EventViewModel?.SelectedPlatformType ?? string.Empty,
-            LocationID = lastEvent?.LocationID
+            Date = date
         };
 
         _datasource.Add(SelectedItem, newEvent);
@@ -352,9 +265,9 @@ public class ItemViewModel<TItem, TGridItem> : ViewModelBase, IDataGrid where TI
         searchText ??= GridFilterViewModel.SearchText;
 
         var result = _eventList
-                    .OrderByDescending(o => o.DateEnd)
+                    .OrderByDescending(o => o.Date)
                     .DistinctBy(o => o.ItemID)
-                    .OrderBy(o => o.DateEnd)
+                    .OrderBy(o => o.Date)
                     .ToList();
 
         if (DateTimeFilter.HasValue
@@ -362,10 +275,8 @@ public class ItemViewModel<TItem, TGridItem> : ViewModelBase, IDataGrid where TI
             && string.IsNullOrWhiteSpace(searchText))
         {
             result = result
-            .Where(o =>
-            o.DateEnd.HasValue
-            && o.DateEnd.Value >= DateTimeFilter.Value
-            && o.DateEnd.Value < new DateTime(DateTimeFilter.Value.Year + 1, 1, 1))
+            .Where(o => o.Date >= DateTimeFilter.Value
+            && o.Date < new DateTime(DateTimeFilter.Value.Year + 1, 1, 1))
             .ToList();
         }
 
@@ -400,11 +311,10 @@ public class ItemViewModel<TItem, TGridItem> : ViewModelBase, IDataGrid where TI
             : DateTime.MaxValue;
 
         return _eventList
-            .OrderByDescending(o => o.DateEnd)
+            .OrderByDescending(o => o.Date)
             .DistinctBy(o => o.ItemID)
-            .OrderBy(o => o.DateEnd)
-            .Where(o => o.DateEnd.HasValue && o.DateEnd.Value <= dateFilter)
-            .Where(o => o.Bookmakred)
+            .OrderBy(o => o.Date)
+            .Where(o => o.Date <= dateFilter)
             .Select(
                 o =>
                     Convert(
@@ -421,32 +331,6 @@ public class ItemViewModel<TItem, TGridItem> : ViewModelBase, IDataGrid where TI
         return default!;
     }
 
-    protected int GetItemAmount(IEnumerable<Event> eventList)
-    {
-        // This is for the case that the Item is already completed by you are rereading it.
-        var lastCompletedDate = eventList.Where(o => o.Completed)?.MaxBy(o => o.DateEnd)?.DateEnd ?? DateTime.MinValue;
-        var lastDate = eventList.MaxBy(o => o.DateEnd)?.DateEnd ?? DateTime.MinValue;
-        var dateFilter = lastCompletedDate;
-
-        var lastChapter = eventList.LastOrDefault()?.Chapter;
-
-        if (EventViewModel is not null
-            && lastChapter.HasValue
-            && lastChapter < EventViewModel.NewEventChapter)
-        {
-            lastChapter = EventViewModel.NewEventChapter;
-        }
-
-        var eventsByChapter = eventList.Where(o => o.Chapter == lastChapter);
-
-        if (lastCompletedDate == lastDate)
-        {
-            return eventsByChapter.Sum(o => o.Amount);
-        }
-
-        return eventsByChapter.Where(o => o.DateEnd > dateFilter).Sum(o => o.Amount);
-    }
-
     public void SelectedItemChanged()
     {
         Events.Clear();
@@ -460,8 +344,8 @@ public class ItemViewModel<TItem, TGridItem> : ViewModelBase, IDataGrid where TI
         SelectedItem = _itemList.First(o => o.ID == SelectedGridItem.ID);
         Events.AddRange(
             _eventList
-                .Where(o => o.ItemID == SelectedItem.ID && o.DateEnd.HasValue)
-                .OrderBy(o => o.DateEnd)
+                .Where(o => o.ItemID == SelectedItem.ID)
+                .OrderBy(o => o.Date)
         );
 
         if (!Events.Any())
@@ -472,14 +356,6 @@ public class ItemViewModel<TItem, TGridItem> : ViewModelBase, IDataGrid where TI
         var item = _itemList.First(o => o.ID == SelectedItem.ID);
         Image = FileRepsitory.GetImage<TItem>(item.ID);
 
-        if (_settings.DefaultAddAmount == -1)
-        {
-            AddAmount = Events.LastOrDefault()?.Amount ?? 0;
-        }
-        else
-        {
-            AddAmount = _settings.DefaultAddAmount;
-        }
     }
 
     private ObservableCollection<TGridItem> GetSelectedGrid()
