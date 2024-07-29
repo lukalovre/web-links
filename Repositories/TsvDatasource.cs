@@ -153,8 +153,7 @@ internal class TsvDatasource : IDatasource
         throw new System.NotImplementedException();
     }
 
-    public void Update<T>(T item)
-        where T : IItem
+    public void Update<T>(T item) where T : IItem
     {
         var events = GetEventList<T>();
 
@@ -208,17 +207,33 @@ internal class TsvDatasource : IDatasource
         var itemFilePath = GetEventFilePath<T>();
         using var writer = new StreamWriter(itemFilePath, false, System.Text.Encoding.UTF8);
         using var csvText = new CsvWriter(writer, _config);
-        csvText.WriteRecords(events);
         var options = new TypeConverterOptions { Formats = ["yyyy-MM-dd HH:mm:ss"] };
         csvText.Context.TypeConverterOptionsCache.AddOptions<DateTime>(options);
         csvText.Context.TypeConverterOptionsCache.AddOptions<DateTime?>(options);
-
+        csvText.WriteRecords(events);
         writer.Flush();
     }
 
     public List<Event> GetEventListConvert<T>() where T : IItem
     {
         throw new NotImplementedException();
+    }
+
+    public void Update(Event item)
+    {
+        var events = GetEventList("Link");
+
+        var updateItem = events.First(o => o.ID == item.ID);
+        events[events.IndexOf(updateItem)] = item;
+
+        var itemFilePath = GetEventFilePath<Link>();
+        using var writer = new StreamWriter(itemFilePath, false, System.Text.Encoding.UTF8);
+        using var csvText = new CsvWriter(writer, _config);
+        var options = new TypeConverterOptions { Formats = ["yyyy-MM-dd HH:mm:ss"] };
+        csvText.Context.TypeConverterOptionsCache.AddOptions<DateTime>(options);
+        csvText.Context.TypeConverterOptionsCache.AddOptions<DateTime?>(options);
+        csvText.WriteRecords(events);
+        writer.Flush();
     }
 
     #region Remove after converted all data

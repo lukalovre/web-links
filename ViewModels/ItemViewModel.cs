@@ -262,6 +262,7 @@ public class ItemViewModel<TItem, TGridItem> : ViewModelBase, IDataGrid where TI
 
         _itemList = _datasource.GetList<TItem>(type);
         _eventList = _datasource.GetEventList(type);
+
         searchText ??= GridFilterViewModel.SearchText;
 
         var result = _eventList
@@ -311,6 +312,7 @@ public class ItemViewModel<TItem, TGridItem> : ViewModelBase, IDataGrid where TI
             : DateTime.MaxValue;
 
         return _eventList
+            .Where(o => o.Bookmarked.HasValue && o.Bookmarked.Value == true)
             .OrderByDescending(o => o.Date)
             .DistinctBy(o => o.ItemID)
             .OrderBy(o => o.Date)

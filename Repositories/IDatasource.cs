@@ -17,4 +17,5 @@ public interface IDatasource
     void MakeBackup(string path);
 
     void Update<T>(T item) where T : IItem;
+    void Update(Event item);
 }
