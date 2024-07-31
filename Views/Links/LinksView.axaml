@@ -32,7 +32,10 @@
 			<TabItem Header="Info">
 				<ScrollViewer>
 					<StackPanel>
-						<Button Command="{Binding OpenLink}" Margin="15">Open</Button>
+						<StackPanel Orientation="Horizontal">
+							<Button Command="{Binding OpenLink}" Margin="15">Open</Button>
+							<Button Command="{Binding Unfollow}" Margin="15">Unfollow</Button>
+						</StackPanel>
 						<TextBlock Text="{Binding SelectedItem.Title}" />
 						<TextBlock Text="{Binding SelectedItem.Category}" />
 						<TextBlock Text="{Binding SelectedItem.SubCategory}" />

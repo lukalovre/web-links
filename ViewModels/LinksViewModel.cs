@@ -38,6 +38,7 @@ public class LinksViewModel : ViewModelBase, IDataGrid
 
         AddItemClick = ReactiveCommand.Create(AddItemClickAction);
         OpenLink = ReactiveCommand.Create(OpenLinkAction);
+        Unfollow = ReactiveCommand.Create(UnfollowAction);
         OpenImage = ReactiveCommand.Create(OpenImageAction);
 
         SelectedGridItem = GridItems.LastOrDefault()!;
@@ -45,6 +46,21 @@ public class LinksViewModel : ViewModelBase, IDataGrid
         NewItem = (Link)Activator.CreateInstance(typeof(Link))!;
 
         IsFullAmount = _settings.IsFullAmountDefaultValue;
+    }
+
+    private void UnfollowAction()
+    {
+        var lastEvent = Events.MaxBy(o => o.Date) ?? Events.LastOrDefault();
+
+        if (lastEvent is null)
+        {
+            return;
+        }
+
+        lastEvent.Bookmarked = null;
+        _datasource.Update(lastEvent);
+
+        ReloadData();
     }
 
     protected DateTime? DateTimeFilter
@@ -104,8 +120,8 @@ public class LinksViewModel : ViewModelBase, IDataGrid
     public ObservableCollection<Event> Events { get; set; }
 
     public ReactiveCommand<Unit, Unit> AddItemClick { get; }
-    public ReactiveCommand<Unit, Unit> AddEventClick { get; }
     public ReactiveCommand<Unit, Unit> OpenLink { get; }
+    public ReactiveCommand<Unit, Unit> Unfollow { get; }
     public ReactiveCommand<Unit, Unit> OpenImage { get; }
 
     public Link NewItem
@@ -297,11 +313,11 @@ public class LinksViewModel : ViewModelBase, IDataGrid
             : DateTime.MaxValue;
 
         return _eventList
-            .Where(o => o.Bookmarked.HasValue && o.Bookmarked.Value == true)
             .OrderByDescending(o => o.Date)
             .DistinctBy(o => o.ItemID)
             .OrderBy(o => o.Date)
             .Where(o => o.Date <= dateFilter)
+            .Where(o => o.Bookmarked.HasValue && o.Bookmarked.Value == true)
             .Select(
                 o =>
                     Convert(
