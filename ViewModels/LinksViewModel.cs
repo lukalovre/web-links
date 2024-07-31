@@ -191,14 +191,7 @@ public class LinksViewModel : ViewModelBase, IDataGrid
 
     private void OpenLinkAction()
     {
-        var link = string.Empty;
-
-        if (_settings.OpenItemLinkUrl)
-        {
-            link = (SelectedItem as IExternal)?.ExternalID ?? string.Empty;
-        }
-
-        HtmlHelper.OpenLink(link, [.. GetAlternativeOpenLinkSearchParams()]);
+        HtmlHelper.OpenLink(SelectedItem.Url, [.. GetAlternativeOpenLinkSearchParams()]);
     }
 
     private void AddItemClickAction()
