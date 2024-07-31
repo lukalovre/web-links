@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reactive;
 using Avalonia.Media.Imaging;
 using AvaloniaApplication1.Models;
-using AvaloniaApplication1.Models.Interfaces;
 using AvaloniaApplication1.Repositories;
 using AvaloniaApplication1.ViewModels.Extensions;
 using DynamicData;
@@ -38,8 +37,6 @@ public class LinksViewModel : ViewModelBase, IDataGrid
         EventViewModel = new EventViewModel(Events, _settings.PlatformTypes);
 
         AddItemClick = ReactiveCommand.Create(AddItemClickAction);
-        AddEventClick = ReactiveCommand.Create(AddEventClickAction);
-
         OpenLink = ReactiveCommand.Create(OpenLinkAction);
         OpenImage = ReactiveCommand.Create(OpenImageAction);
 
@@ -192,6 +189,20 @@ public class LinksViewModel : ViewModelBase, IDataGrid
     private void OpenLinkAction()
     {
         HtmlHelper.OpenLink(SelectedItem.Url, [.. GetAlternativeOpenLinkSearchParams()]);
+
+        NewEvent ??= new Event();
+
+        var newEvent = new Event
+        {
+            ID = 0,
+            ItemID = 0,
+            Date = DateTime.Now,
+            Bookmarked = true
+        };
+
+        _datasource.Add(SelectedItem, newEvent);
+
+        ReloadData();
     }
 
     private void AddItemClickAction()
@@ -202,31 +213,11 @@ public class LinksViewModel : ViewModelBase, IDataGrid
         {
             ID = 0,
             ItemID = 0,
-            Date = DateTime.Now
+            Date = DateTime.Now,
+            Bookmarked = true
         };
 
         _datasource.Add(NewItem, newEvent);
-
-        ReloadData();
-        ClearNewItemControls();
-    }
-
-    private void AddEventClickAction()
-    {
-        var lastEvent = Events.MaxBy(o => o.Date) ?? Events.LastOrDefault();
-
-        var date = !EventViewModel.IsEditDate
-        ? DateTime.Now
-        : EventViewModel?.SelectedEvent?.Date ?? DateTime.Now;
-
-        var newEvent = new Event
-        {
-            ID = 0,
-            ItemID = 0,
-            Date = date
-        };
-
-        _datasource.Add(SelectedItem, newEvent);
 
         ReloadData();
         ClearNewItemControls();
