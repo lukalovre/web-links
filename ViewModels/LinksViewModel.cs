@@ -315,7 +315,7 @@ public class LinksViewModel : ViewModelBase, IDataGrid
         return _eventList
             .OrderByDescending(o => o.Date)
             .DistinctBy(o => o.ItemID)
-            .OrderBy(o => o.Date)
+            .OrderByDescending(o => o.Date)
             .Where(o => o.Date <= dateFilter)
             .Where(o => o.Bookmarked.HasValue && o.Bookmarked.Value == true)
             .Select(
