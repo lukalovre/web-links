@@ -184,10 +184,7 @@ public class LinksViewModel : ViewModelBase, IDataGrid
         NewItem = await _external.GetItem(InputUrl);
 
         NewImage = FileRepsitory.GetImageTemp<Link>();
-        NewEvent = new Event
-        {
-
-        };
+        NewEvent = new Event();
 
         _inputUrl = string.Empty;
     }
@@ -201,7 +198,7 @@ public class LinksViewModel : ViewModelBase, IDataGrid
 
     private void OpenLinkAction()
     {
-        HtmlHelper.OpenLink(SelectedItem.Url, [.. GetAlternativeOpenLinkSearchParams()]);
+        HtmlHelper.OpenLink(SelectedItem.Url);
 
         NewEvent ??= new Event();
 
