@@ -7,8 +7,7 @@
 					<DataGrid Margin="1" Width="570" ItemsSource="{Binding GridItemsBookmarked}" IsReadOnly="True" GridLinesVisibility="All" BorderThickness="2" BorderBrush="LimeGreen" SelectedItem="{Binding SelectedGridItem}">
 						<DataGrid.Columns>
 							<DataGridTextColumn Binding="{Binding Title}" Header="Title" Width="*" />
-							<DataGridTextColumn Binding="{Binding Category}" Header="Category" Width="70" />
-							<DataGridTextColumn Binding="{Binding SubCategory}" Header="SubCategory" Width="93" />
+							<DataGridTextColumn Binding="{Binding Category}" Header="Category" Width="100" />
 							<DataGridTextColumn Binding="{Binding LastDate, Converter={StaticResource DaysAgoToStringConverter}}" Header="Ago" Width="70" />
 						</DataGrid.Columns>
 					</DataGrid>
@@ -20,8 +19,7 @@
 					<DataGrid Margin="1" Width="570" ItemsSource="{Binding GridItems}" IsReadOnly="True" GridLinesVisibility="All" BorderThickness="2" BorderBrush="LimeGreen" SelectedItem="{Binding SelectedGridItem}">
 						<DataGrid.Columns>
 							<DataGridTextColumn Binding="{Binding Title}" Header="Title" Width="*" />
-							<DataGridTextColumn Binding="{Binding Category}" Header="Category" Width="70" />
-							<DataGridTextColumn Binding="{Binding SubCategory}" Header="SubCategory" Width="93" />
+							<DataGridTextColumn Binding="{Binding Category}" Header="Category" Width="100" />
 							<DataGridTextColumn Binding="{Binding LastDate, Converter={StaticResource DaysAgoToStringConverter}}" Header="Ago" Width="70" />
 						</DataGrid.Columns>
 					</DataGrid>
@@ -38,7 +36,6 @@
 						</StackPanel>
 						<TextBlock Text="{Binding SelectedItem.Title}" />
 						<TextBlock Text="{Binding SelectedItem.Category}" />
-						<TextBlock Text="{Binding SelectedItem.SubCategory}" />
 						<TextBlock Text="{Binding SelectedItem.Url}" />
 						<Button>
 							<Image Source="{Binding Image}" Width="350" Height="466" />
@@ -57,7 +54,6 @@
 						<StackPanel>
 							<TextBox Watermark="Title" Text="{Binding NewItem.Title}" />
 							<TextBox Watermark="Category" Text="{Binding NewItem.Category}" />
-							<TextBox Watermark="SubCategory" Text="{Binding NewItem.SubCategory}" />
 							<TextBox Watermark="Url" Text="{Binding NewItem.Url}" />
 						</StackPanel>
 						<Button>

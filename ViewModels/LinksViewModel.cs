@@ -332,7 +332,6 @@ public class LinksViewModel : ViewModelBase, IDataGrid
             i.ID,
             i.Title,
             i.Category,
-            i.SubCategory,
             eventList.LastEventDate());
     }
 
