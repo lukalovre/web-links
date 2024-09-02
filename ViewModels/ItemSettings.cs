@@ -1,5 +1,4 @@
 using System;
-using System.Collections.ObjectModel;
 
 namespace AvaloniaApplication1.ViewModels;
 
@@ -14,10 +13,8 @@ public record ItemSettings
     public string DefaultNewItemPlatform { get; set; } = string.Empty;
     public bool OpenItemLinkUrl { get; set; }
     public string AmountVerb { get; set; } = "minutes";
-    public ObservableCollection<string> PlatformTypes { get; set; } = [];
     public bool DefaultNewItemBookmakred { get; set; }
     public float AmountToMinutesModifier { get; set; } = 1f;
     public bool IsFullAmountDefaultValue { get; set; } = true;
-    public eAmountType? AmountType { get; set; } = eAmountType.Minutes;
     public bool ShowYearFilter { get; set; } = true;
 }

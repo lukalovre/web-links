@@ -33,7 +33,7 @@ public class LinksViewModel : ViewModelBase, IDataGrid
         ReloadData();
 
         Events = [];
-        EventViewModel = new EventViewModel(Events, _settings.PlatformTypes);
+        EventViewModel = new EventViewModel(Events);
 
         AddItemClick = ReactiveCommand.Create(AddItemClickAction);
         OpenLink = ReactiveCommand.Create(OpenLinkAction);
@@ -70,7 +70,6 @@ public class LinksViewModel : ViewModelBase, IDataGrid
         }
     }
 
-    public ObservableCollection<string> PlatformTypes => _settings.PlatformTypes;
     private readonly ItemSettings _settings = new();
     private readonly IDatasource _datasource;
     private readonly IExternal<Link> _external;
@@ -92,6 +91,7 @@ public class LinksViewModel : ViewModelBase, IDataGrid
     private string _inputUrl = string.Empty;
     private bool _isFullAmount;
     private int _newItemAmount;
+    private string _selectedCategory;
 
     public bool UseNewDate
     {
@@ -177,6 +177,14 @@ public class LinksViewModel : ViewModelBase, IDataGrid
             this.RaiseAndSetIfChanged(ref _inputUrl, value);
             InputUrlChanged();
         }
+    }
+
+    public ObservableCollection<string> Categories { get; set; }
+
+    public string SelectedCategory
+    {
+        get => _selectedCategory;
+        set => this.RaiseAndSetIfChanged(ref _selectedCategory, value);
     }
 
     private async void InputUrlChanged()

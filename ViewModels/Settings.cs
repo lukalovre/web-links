@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 using Newtonsoft.Json;
 using Repositories;
 
@@ -60,7 +58,6 @@ public class Settings
 
         return new ItemSettings
         {
-            PlatformTypes = ConvertPlatformTypes(itemTypeName),
             AmountToMinutesModifier = result.AmountToMinutesModifier,
             AmountVerb = result.AmountVerb,
             DateTimeFilter = ConvertDateTimeFilter(result.DateTimeFilter),
@@ -73,7 +70,6 @@ public class Settings
             IsFullAmountDefaultValue = result.IsFullAmountDefaultValue,
             NewItemAmountOverride = result.NewItemAmountOverride,
             OpenItemLinkUrl = result.OpenItemLinkUrl,
-            AmountType = result.AmountType,
             ShowYearFilter = result.ShowYearFilter
         };
     }
@@ -85,17 +81,6 @@ public class Settings
             "min" => DateTime.MinValue,
             "-24" => DateTime.Now.AddHours(-24),
             _ => null
-        };
-    }
-
-    private static ObservableCollection<string> ConvertPlatformTypes(string itemTypeName)
-    {
-        return itemTypeName switch
-        {
-            "Game" => new(Enum.GetValues(typeof(eGamePlatformTypes)).Cast<eGamePlatformTypes>().Select(v => v.ToString())),
-            "Music" => new(Enum.GetValues(typeof(eMusicPlatformType)).Cast<eMusicPlatformType>().Select(v => v.ToString())),
-            "Song" => new(Enum.GetValues(typeof(eMusicPlatformType)).Cast<eMusicPlatformType>().Select(v => v.ToString())),
-            _ => []
         };
     }
 }

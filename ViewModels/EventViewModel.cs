@@ -46,35 +46,10 @@ public partial class EventViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _selectedEvent, value);
     }
 
-    private string _selectedPlatformType = string.Empty;
-    private string _selectedPersonString = string.Empty;
-    private int _newEventChapter = 1;
-
-    public string SelectedPersonString
-    {
-        get => _selectedPersonString;
-        set => this.RaiseAndSetIfChanged(ref _selectedPersonString, value);
-    }
-
-    public ObservableCollection<string> PlatformTypes { get; set; }
-
-    public string SelectedPlatformType
-    {
-        get => _selectedPlatformType;
-        set => this.RaiseAndSetIfChanged(ref _selectedPlatformType, value);
-    }
-
-    public int NewEventChapter
-    {
-        get => _newEventChapter;
-        set => this.RaiseAndSetIfChanged(ref _newEventChapter, value);
-    }
-
-    public EventViewModel(ObservableCollection<Event> events, ObservableCollection<string> platformTypes)
+    public EventViewModel(ObservableCollection<Event> events)
     {
         Events = events;
         Events.CollectionChanged += CollectionChanged;
-        PlatformTypes = platformTypes;
     }
 
     private void CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -89,7 +64,5 @@ public partial class EventViewModel : ViewModelBase
 
         _date = SelectedEvent.Date;
         _time = _date.TimeOfDay;
-
     }
-
 }

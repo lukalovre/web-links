@@ -35,8 +35,9 @@
 							<Button Command="{Binding Unfollow}" Margin="15">Unfollow</Button>
 						</StackPanel>
 						<TextBlock Text="{Binding SelectedItem.Title}" />
-						<TextBlock Text="{Binding SelectedItem.Category}" />
 						<TextBlock Text="{Binding SelectedItem.Url}" />
+						<TextBlock Text="{Binding SelectedItem.Category}" />
+						<ComboBox ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}" Margin="0,0,0,10"/>
 						<Button>
 							<Image Source="{Binding Image}" Width="350" Height="466" />
 						</Button>
