@@ -27,7 +27,6 @@ public class LinksViewModel : ViewModelBase, IDataGrid
         {
             ShowYearFilter = _settings.ShowYearFilter
         };
-        People = new PeopleSelectionViewModel();
 
         GridItems = [];
         GridItemsBookmarked = [];
@@ -105,8 +104,6 @@ public class LinksViewModel : ViewModelBase, IDataGrid
         get => _isFullAmount;
         set => this.RaiseAndSetIfChanged(ref _isFullAmount, value);
     }
-
-    public PeopleSelectionViewModel People { get; set; }
 
     public ObservableCollection<LinkGridItem> GridItems { get; set; }
     public ObservableCollection<LinkGridItem> GridItemsBookmarked { get; set; }

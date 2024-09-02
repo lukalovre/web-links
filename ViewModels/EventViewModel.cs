@@ -58,8 +58,6 @@ public partial class EventViewModel : ViewModelBase
 
     public ObservableCollection<string> PlatformTypes { get; set; }
 
-    public PeopleSelectionViewModel People { get; }
-
     public string SelectedPlatformType
     {
         get => _selectedPlatformType;
@@ -77,7 +75,6 @@ public partial class EventViewModel : ViewModelBase
         Events = events;
         Events.CollectionChanged += CollectionChanged;
         PlatformTypes = platformTypes;
-        People = new PeopleSelectionViewModel();
     }
 
     private void CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -94,6 +91,5 @@ public partial class EventViewModel : ViewModelBase
         _time = _date.TimeOfDay;
 
     }
-
 
 }
