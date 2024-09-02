@@ -67,20 +67,23 @@ public static class HtmlHelper
 
     public static string CleanUrl(string url)
     {
-        return url
-        ?.Split('?')
-        ?.FirstOrDefault()
-        ?.Trim()
-        ?? string.Empty;
+        return url?.Trim() ?? string.Empty;
     }
 
     internal async static Task<HtmlDocument> DownloadWebpage(string url)
     {
-        using var client = new HttpClient();
-        var text = await client.GetStringAsync(url);
-        var htmlDocument = new HtmlDocument();
-        htmlDocument.LoadHtml(text);
+        try
+        {
+            using var client = new HttpClient();
+            var text = await client.GetStringAsync(url);
+            var htmlDocument = new HtmlDocument();
+            htmlDocument.LoadHtml(text);
 
-        return htmlDocument;
+            return htmlDocument;
+        }
+        catch
+        {
+            return null!;
+        }
     }
 }

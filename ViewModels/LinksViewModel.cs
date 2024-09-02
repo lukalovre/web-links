@@ -179,7 +179,7 @@ public class LinksViewModel : ViewModelBase, IDataGrid
         }
     }
 
-    public ObservableCollection<string> Categories { get; set; }
+    public ObservableCollection<string> Categories { get; set; } = [];
 
     public string SelectedCategory
     {
@@ -235,6 +235,8 @@ public class LinksViewModel : ViewModelBase, IDataGrid
             Bookmarked = true
         };
 
+        NewItem.Category = SelectedCategory;
+
         _datasource.Add(NewItem, newEvent);
 
         ReloadData();
@@ -249,6 +251,12 @@ public class LinksViewModel : ViewModelBase, IDataGrid
 
         GridItemsBookmarked.Clear();
         GridItemsBookmarked.AddRange(LoadDataBookmarked());
+
+        Categories.Clear();
+        Categories.AddRange(GridItemsBookmarked
+            .DistinctBy(o => o.Category)
+            .Select(o => o.Category)
+            .Order());
     }
 
     private void ClearNewItemControls()

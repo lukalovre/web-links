@@ -8,20 +8,24 @@ public class Links : IExternal<Link>
 {
     public async Task<Link> GetItem(string url)
     {
+        url = HtmlHelper.CleanUrl(url);
         var htmlDocument = await HtmlHelper.DownloadWebpage(url);
 
         if (htmlDocument is null)
         {
-            return default!;
+            return new Link
+            {
+                Url = url
+            };
         }
 
         var node = htmlDocument.DocumentNode.SelectSingleNode("//title");
-        var ttle = node.InnerHtml.Trim();
+        var title = node.InnerHtml.Trim();
 
         return new Link
         {
             Url = url,
-            Title = ttle
+            Title = title
         };
     }
 }
