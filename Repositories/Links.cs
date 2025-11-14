@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
-using AvaloniaApplication1.Models;
-using AvaloniaApplication1.Repositories;
+using WebLinks.Models;
+using WebLinks.Repositories;
 
 namespace Repositories;
 

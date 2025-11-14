@@ -4,15 +4,15 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
 using Avalonia.Media.Imaging;
-using AvaloniaApplication1.Models;
-using AvaloniaApplication1.Repositories;
-using AvaloniaApplication1.ViewModels.Extensions;
+using WebLinks.Models;
+using WebLinks.Repositories;
+using WebLinks.ViewModels.Extensions;
 using DynamicData;
 using Newtonsoft.Json;
 using ReactiveUI;
 using Repositories;
 
-namespace AvaloniaApplication1.ViewModels;
+namespace WebLinks.ViewModels;
 
 public class LinksViewModel : ViewModelBase, IDataGrid
 {

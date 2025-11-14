@@ -1,4 +1,4 @@
-namespace AvaloniaApplication1.Repositories;
+namespace WebLinks.Repositories;
 
 public static class Helpers
 {

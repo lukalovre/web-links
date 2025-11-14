@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using AvaloniaApplication1.Models.Interfaces;
+using WebLinks.Models.Interfaces;
 
-namespace AvaloniaApplication1.Models;
+namespace WebLinks.Models;
 
 [Table("Links")]
 public record Link : IItem

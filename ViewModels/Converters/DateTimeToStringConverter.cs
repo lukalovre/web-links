@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
 using Avalonia.Data.Converters;
-using AvaloniaApplication1.ViewModels.Extensions;
+using WebLinks.ViewModels.Extensions;
 
 public class DateTimeToStringConverter : IValueConverter
 {

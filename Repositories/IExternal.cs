@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
-using AvaloniaApplication1.Models.Interfaces;
+using WebLinks.Models.Interfaces;
 
-namespace AvaloniaApplication1.Repositories;
+namespace WebLinks.Repositories;
 
 public interface IExternal<T> where T : IItem
 {

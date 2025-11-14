@@ -1,4 +1,4 @@
-namespace AvaloniaApplication1.Models.Interfaces;
+namespace WebLinks.Models.Interfaces;
 
 public interface IRuntime
 {

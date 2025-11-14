@@ -1,7 +1,7 @@
 using System;
 using System.IO;
-using AvaloniaApplication1.Repositories;
-using AvaloniaApplication1.ViewModels;
+using WebLinks.Repositories;
+using WebLinks.ViewModels;
 
 namespace Repositories;
 

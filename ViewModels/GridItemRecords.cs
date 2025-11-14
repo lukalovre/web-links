@@ -1,6 +1,6 @@
 using System;
-using AvaloniaApplication1.Models.Interfaces;
+using WebLinks.Models.Interfaces;
 
-namespace AvaloniaApplication1.ViewModels;
+namespace WebLinks.ViewModels;
 
 public record LinkGridItem(int ID, string Title, string Category, DateTime? LastDate) : IGridItem;

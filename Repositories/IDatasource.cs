@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using AvaloniaApplication1.Models;
-using AvaloniaApplication1.Models.Interfaces;
+using WebLinks.Models;
+using WebLinks.Models.Interfaces;
 
 namespace Repositories;
 

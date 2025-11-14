@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace AvaloniaApplication1.ViewModels.Extensions;
+namespace WebLinks.ViewModels.Extensions;
 
 public static class DateTimeExtensions
 {

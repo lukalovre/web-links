@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace AvaloniaApplication1.Views;
+namespace WebLinks.Views;
 
 public partial class GridFilterView : UserControl
 {

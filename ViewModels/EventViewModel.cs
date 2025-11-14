@@ -2,10 +2,10 @@ using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
-using AvaloniaApplication1.Models;
+using WebLinks.Models;
 using ReactiveUI;
 
-namespace AvaloniaApplication1.ViewModels;
+namespace WebLinks.ViewModels;
 
 public partial class EventViewModel : ViewModelBase
 {

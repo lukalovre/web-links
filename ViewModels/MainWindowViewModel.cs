@@ -1,6 +1,6 @@
 ﻿using Repositories;
 
-namespace AvaloniaApplication1.ViewModels;
+namespace WebLinks.ViewModels;
 
 public class MainWindowViewModel(IDatasource datasource) : ViewModelBase
 {
