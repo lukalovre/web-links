@@ -5,6 +5,7 @@ using Avalonia.Markup.Xaml;
 using WebLinks.ViewModels;
 using WebLinks.Views;
 using Repositories;
+using Avalonia.Threading;
 
 namespace WebLinks;
 
@@ -22,9 +23,14 @@ public partial class App : Application
             desktop.MainWindow = new MainWindow
             {
                 DataContext = new MainWindowViewModel(new TsvDatasource()),
-                Position = new PixelPoint(0, 1000),
-                WindowState = WindowState.Maximized
+                WindowStartupLocation = WindowStartupLocation.CenterScreen,
+                Position = new PixelPoint(0, 1000)
             };
+
+            Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                desktop.MainWindow.WindowState = WindowState.Maximized;
+            }, DispatcherPriority.Background);
         }
 
         base.OnFrameworkInitializationCompleted();
