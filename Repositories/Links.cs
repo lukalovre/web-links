@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using WebLinks.Models;
 using WebLinks.Repositories;
@@ -23,15 +22,7 @@ public class Links : IExternal<Link>
         var node = htmlDocument.DocumentNode.SelectSingleNode("//title");
         var title = node?.InnerHtml.Trim() ?? string.Empty;
 
-        var imageNode = htmlDocument.DocumentNode.SelectSingleNode("//meta[@property='og:image']")
-            ?? htmlDocument.DocumentNode.SelectSingleNode("//meta[@name='twitter:image']");
-        var imageUrl = imageNode?.GetAttributeValue("content", string.Empty);
-
-        if (Uri.TryCreate(url, UriKind.Absolute, out var pageUri)
-            && Uri.TryCreate(pageUri, imageUrl, out var absoluteImageUri))
-        {
-            await HtmlHelper.DownloadPNG(absoluteImageUri.ToString(), Paths.GetTempPath<Link>());
-        }
+        await HtmlHelper.DownloadPNGFromDocument(htmlDocument, url, Paths.GetTempPath<Link>());
 
         return new Link
         {

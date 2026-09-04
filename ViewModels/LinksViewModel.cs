@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Reactive;
+using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using WebLinks.Models;
 using WebLinks.Repositories;
@@ -348,7 +350,7 @@ public class LinksViewModel : ViewModelBase, IDataGrid
             eventList.LastEventDate());
     }
 
-    public void SelectedItemChanged()
+    public async void SelectedItemChanged()
     {
         Events.Clear();
         Image = null;
@@ -372,6 +374,13 @@ public class LinksViewModel : ViewModelBase, IDataGrid
 
         var item = _itemList.First(o => o.ID == SelectedItem.ID);
         Image = FileRepsitory.GetImage<Link>(item.ID);
+
+        if (Image is null)
+        {
+            var imagePath = Path.Combine(Paths.GetImagesPath<Link>(), item.ID.ToString());
+            await HtmlHelper.DownloadPNGFromWebpage(item.Url, imagePath);
+            Image = FileRepsitory.GetImage<Link>(item.ID);
+        }
 
     }
 

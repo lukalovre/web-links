@@ -54,11 +54,37 @@ public static class HtmlHelper
         await DownloadFile(webFile, destinationFile);
     }
 
+    public async static Task DownloadPNGFromWebpage(string url, string destinationFile)
+    {
+        FileRepsitory.Delete($"{destinationFile}.png");
+
+        var htmlDocument = await DownloadWebpage(url);
+        await DownloadPNGFromDocument(htmlDocument, url, destinationFile);
+    }
+
+    internal async static Task DownloadPNGFromDocument(HtmlDocument? htmlDocument, string url, string destinationFile)
+    {
+        var imageNode = htmlDocument?.DocumentNode.SelectSingleNode("//meta[@property='og:image']")
+            ?? htmlDocument?.DocumentNode.SelectSingleNode("//meta[@name='twitter:image']");
+        var imageUrl = imageNode?.GetAttributeValue("content", string.Empty);
+
+        if (Uri.TryCreate(url, UriKind.Absolute, out var pageUri)
+            && Uri.TryCreate(pageUri, imageUrl, out var absoluteImageUri))
+        {
+            await DownloadPNG(absoluteImageUri.ToString(), destinationFile);
+        }
+    }
+
     private async static Task DownloadFile(string imageUrl, string imagePath)
     {
         using var httpClient = new HttpClient();
         using var response = await httpClient.GetAsync(imageUrl, HttpCompletionOption.ResponseHeadersRead);
-        response.EnsureSuccessStatusCode();
+
+        if (!response.IsSuccessStatusCode)
+        {
+            return;
+        }
+
         using var ms = await response.Content.ReadAsStreamAsync();
         using var fs = File.Create(imagePath);
         await ms.CopyToAsync(fs);
@@ -75,7 +101,14 @@ public static class HtmlHelper
         try
         {
             using var client = new HttpClient();
-            var text = await client.GetStringAsync(url);
+            using var response = await client.GetAsync(url);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return null!;
+            }
+
+            var text = await response.Content.ReadAsStringAsync();
             var htmlDocument = new HtmlDocument();
             htmlDocument.LoadHtml(text);
 
