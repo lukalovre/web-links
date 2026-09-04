@@ -5,7 +5,11 @@ using System.IO;
 using System.Linq;
 using System.Reactive;
 using System.Threading.Tasks;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Media.Imaging;
+using Avalonia.Platform.Storage;
 using WebLinks.Models;
 using WebLinks.Repositories;
 using WebLinks.ViewModels.Extensions;
@@ -40,7 +44,7 @@ public class LinksViewModel : ViewModelBase, IDataGrid
         AddItemClick = ReactiveCommand.Create(AddItemClickAction);
         OpenLink = ReactiveCommand.Create(OpenLinkAction);
         Unfollow = ReactiveCommand.Create(UnfollowAction);
-        OpenImage = ReactiveCommand.Create(OpenImageAction);
+        OpenImage = ReactiveCommand.CreateFromTask(OpenImageAction);
 
         SelectedGridItem = GridItems.LastOrDefault()!;
         NewEvent = new Event();
@@ -199,9 +203,48 @@ public class LinksViewModel : ViewModelBase, IDataGrid
         _inputUrl = string.Empty;
     }
 
-    private void OpenImageAction()
+    private async Task OpenImageAction()
     {
-        throw new NotImplementedException();
+        if (Image is not null || SelectedItem is null)
+        {
+            return;
+        }
+
+        if (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktop
+            || desktop.MainWindow is not Window window)
+        {
+            return;
+        }
+
+        var files = await window.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+        {
+            AllowMultiple = false,
+            FileTypeFilter =
+            [
+                new FilePickerFileType("Images")
+                {
+                    Patterns = ["*.png", "*.jpg", "*.jpeg", "*.bmp", "*.gif", "*.webp"]
+                }
+            ]
+        });
+
+        var selectedFile = files.FirstOrDefault();
+
+        if (selectedFile is null)
+        {
+            return;
+        }
+
+        await using var sourceStream = await selectedFile.OpenReadAsync();
+        using var bitmap = new Bitmap(sourceStream);
+        var imagePath = Paths.GetImagePath<Link>(SelectedItem.ID);
+
+        using (var destinationStream = File.Create(imagePath))
+        {
+            bitmap.Save(destinationStream, PngBitmapEncoderOptions.Default);
+        }
+
+        Image = FileRepsitory.GetImage<Link>(SelectedItem.ID);
     }
 
     protected virtual List<string> GetAlternativeOpenLinkSearchParams() => [];

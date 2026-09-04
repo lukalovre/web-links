@@ -37,7 +37,7 @@
 						<TextBlock Text="{Binding SelectedItem.Title}" />
 						<TextBlock Text="{Binding SelectedItem.Url}" />
 						<TextBlock Text="{Binding SelectedItem.Category}" />
-						<Button>
+						<Button Command="{Binding OpenImage}">
 							<Image Source="{Binding Image}" Width="350" Height="350" />
 						</Button>
 						<view:EventView DataContext="{Binding EventViewModel}" />
