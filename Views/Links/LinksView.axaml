@@ -38,7 +38,7 @@
 						<TextBlock Text="{Binding SelectedItem.Url}" />
 						<TextBlock Text="{Binding SelectedItem.Category}" />
 						<Button>
-							<Image Source="{Binding Image}" Width="350" Height="466" />
+							<Image Source="{Binding Image}" Width="350" Height="350" />
 						</Button>
 						<view:EventView DataContext="{Binding EventViewModel}" />
 					</StackPanel>
