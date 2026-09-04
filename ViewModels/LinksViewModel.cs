@@ -424,7 +424,6 @@ public class LinksViewModel : ViewModelBase, IDataGrid
             // await HtmlHelper.DownloadPNGFromWebpage(item.Url, imagePath);
             // Image = FileRepsitory.GetImage<Link>(item.ID);
         }
-
     }
 
     private ObservableCollection<LinkGridItem> GetSelectedGrid()

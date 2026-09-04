@@ -2,8 +2,10 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text.RegularExpressions;
+using System.Text.Json;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 
@@ -58,21 +60,96 @@ public static class HtmlHelper
     {
         FileRepsitory.Delete($"{destinationFile}.png");
 
-        var htmlDocument = await DownloadWebpage(url);
-        await DownloadPNGFromDocument(htmlDocument, url, destinationFile);
+        try
+        {
+            var htmlDocument = await DownloadWebpage(url);
+            var imageUrl = GetImageUrl(htmlDocument, url);
+
+            if (imageUrl is null)
+            {
+                imageUrl = await FindImageWithDuckDuckGo(url);
+            }
+
+            await DownloadPNG(imageUrl ?? string.Empty, destinationFile);
+        }
+        catch
+        {
+            // Image discovery is optional; an unavailable website must not prevent item loading.
+        }
     }
 
     internal async static Task DownloadPNGFromDocument(HtmlDocument? htmlDocument, string url, string destinationFile)
+    {
+        var imageUrl = GetImageUrl(htmlDocument, url);
+
+        await DownloadPNG(imageUrl ?? string.Empty, destinationFile);
+    }
+
+    private static string? GetImageUrl(HtmlDocument? htmlDocument, string url)
     {
         var imageNode = htmlDocument?.DocumentNode.SelectSingleNode("//meta[@property='og:image']")
             ?? htmlDocument?.DocumentNode.SelectSingleNode("//meta[@name='twitter:image']");
         var imageUrl = imageNode?.GetAttributeValue("content", string.Empty);
 
-        if (Uri.TryCreate(url, UriKind.Absolute, out var pageUri)
-            && Uri.TryCreate(pageUri, imageUrl, out var absoluteImageUri))
+        return Uri.TryCreate(url, UriKind.Absolute, out var pageUri)
+            && Uri.TryCreate(pageUri, imageUrl, out var absoluteImageUri)
+            ? absoluteImageUri.ToString()
+            : null;
+    }
+
+    private async static Task<string?> FindImageWithDuckDuckGo(string url)
+    {
+        if (!Uri.TryCreate(url, UriKind.Absolute, out var pageUri))
         {
-            await DownloadPNG(absoluteImageUri.ToString(), destinationFile);
+            return null;
         }
+
+        var siteName = pageUri.Host.StartsWith("www.", StringComparison.OrdinalIgnoreCase)
+            ? pageUri.Host[4..]
+            : pageUri.Host;
+        var searchUrl = $"https://duckduckgo.com/?q={Uri.EscapeDataString($"{siteName} logo")}&iax=images&ia=images";
+        var searchDocument = await DownloadWebpage(searchUrl);
+        var pageHtml = searchDocument?.DocumentNode.OuterHtml ?? string.Empty;
+        var vqdMatch = Regex.Match(pageHtml, "vqd=\\\"([^\\\"]+)\\\"");
+
+        if (vqdMatch.Success)
+        {
+            var imageSearchUrl = $"https://duckduckgo.com/i.js?l=us-en&o=json&q={Uri.EscapeDataString($"{siteName} logo")}&vqd={Uri.EscapeDataString(vqdMatch.Groups[1].Value)}&f=,,,&p=1";
+
+            using var client = new HttpClient();
+            client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0");
+            using var response = await client.GetAsync(imageSearchUrl);
+
+            if (response.IsSuccessStatusCode)
+            {
+                using var json = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+                var apiImageUrl = json.RootElement
+                    .GetProperty("results")[0]
+                    .GetProperty("image")
+                    .GetString();
+
+                if (Uri.TryCreate(apiImageUrl, UriKind.Absolute, out _))
+                {
+                    return apiImageUrl;
+                }
+            }
+        }
+
+        var imageNode = searchDocument?.DocumentNode.SelectSingleNode("//img[contains(@class, 'tile--img__img')]")
+            ?? searchDocument?.DocumentNode.SelectSingleNode("//img[@data-src]");
+        var imageUrl = imageNode?.GetAttributeValue("data-src", string.Empty);
+
+        if (string.IsNullOrWhiteSpace(imageUrl))
+        {
+            imageUrl = imageNode?.GetAttributeValue("src", string.Empty);
+        }
+
+        imageUrl = WebUtility.HtmlDecode(imageUrl);
+
+        return Uri.TryCreate(searchUrl, UriKind.Absolute, out var searchUri)
+            && Uri.TryCreate(searchUri, imageUrl, out var absoluteImageUri)
+            ? absoluteImageUri.ToString()
+            : null;
     }
 
     private async static Task DownloadFile(string imageUrl, string imagePath)
