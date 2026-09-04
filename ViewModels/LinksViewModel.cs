@@ -377,9 +377,9 @@ public class LinksViewModel : ViewModelBase, IDataGrid
 
         if (Image is null)
         {
-            var imagePath = Path.Combine(Paths.GetImagesPath<Link>(), item.ID.ToString());
-            await HtmlHelper.DownloadPNGFromWebpage(item.Url, imagePath);
-            Image = FileRepsitory.GetImage<Link>(item.ID);
+            // var imagePath = Path.Combine(Paths.GetImagesPath<Link>(), item.ID.ToString());
+            // await HtmlHelper.DownloadPNGFromWebpage(item.Url, imagePath);
+            // Image = FileRepsitory.GetImage<Link>(item.ID);
         }
 
     }
