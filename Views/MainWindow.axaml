@@ -7,15 +7,10 @@
 		<vm:MainWindowViewModel />
 	</Design.DataContext>
 	<DockPanel>
-		<TabControl Margin="5">
-			<TabItem Header="Main">
-				<TabControl TabStripPlacement="Left">
-					<TabItem Header="Links">
-						<v:LinksView DataContext="{Binding LinksViewModel}" />
-					</TabItem>
-				</TabControl>
+		<TabControl Margin="5" TabStripPlacement="Left">
+			<TabItem Header="Links">
+				<v:LinksView DataContext="{Binding LinksViewModel}" />
 			</TabItem>
-			<TabItem Header="Stats" />
 		</TabControl>
 	</DockPanel>
 </Window>
