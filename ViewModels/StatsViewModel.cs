@@ -21,6 +21,7 @@ public class StatsViewModel : ViewModelBase
     }
 
     public ObservableCollection<WebpageVisitStat> TopWebpages { get; } = [];
+    public ObservableCollection<SiteVisitStat> TopSites { get; } = [];
     public ReactiveCommand<Unit, Unit> Refresh { get; }
 
     public void Reload()
@@ -52,6 +53,51 @@ public class StatsViewModel : ViewModelBase
             results[index].Rank = index + 1;
             TopWebpages.Add(results[index]);
         }
+
+        var siteResults = events
+            .Join(
+                links,
+                itemEvent => itemEvent.ItemID,
+                link => link.ID,
+                (itemEvent, link) => new { itemEvent, link })
+            .Select(item => new
+            {
+                item.itemEvent,
+                Site = GetSiteName(item.link.Url)
+            })
+            .Where(item => item.Site is not null)
+            .GroupBy(item => item.Site!, StringComparer.OrdinalIgnoreCase)
+            .Select(group => new SiteVisitStat
+            {
+                Rank = 0,
+                Site = group.Key,
+                Visits = group.Count(),
+                LastVisited = group.Max(item => item.itemEvent.Date)
+            })
+            .OrderByDescending(item => item.Visits)
+            .ThenByDescending(item => item.LastVisited)
+            .Take(50)
+            .ToList();
+
+        TopSites.Clear();
+
+        for (var index = 0; index < siteResults.Count; index++)
+        {
+            siteResults[index].Rank = index + 1;
+            TopSites.Add(siteResults[index]);
+        }
+    }
+
+    private static string? GetSiteName(string url)
+    {
+        if (!Uri.TryCreate(url, UriKind.Absolute, out var uri))
+        {
+            return null;
+        }
+
+        return uri.Host.StartsWith("www.", StringComparison.OrdinalIgnoreCase)
+            ? uri.Host[4..]
+            : uri.Host;
     }
 }
 
@@ -60,6 +106,14 @@ public class WebpageVisitStat
     public int Rank { get; set; }
     public string Title { get; set; } = string.Empty;
     public string Url { get; set; } = string.Empty;
+    public int Visits { get; set; }
+    public DateTime LastVisited { get; set; }
+}
+
+public class SiteVisitStat
+{
+    public int Rank { get; set; }
+    public string Site { get; set; } = string.Empty;
     public int Visits { get; set; }
     public DateTime LastVisited { get; set; }
 }

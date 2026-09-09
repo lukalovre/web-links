@@ -45,7 +45,7 @@ public class EventYearGraph : Control
         var slotWidth = chartWidth / items.Count;
         var barWidth = Math.Max(4, slotWidth * 0.62);
         var axisBrush = new SolidColorBrush(Color.Parse("#667085"));
-        var barBrush = new SolidColorBrush(Color.Parse("#2E8B57"));
+        var barBrush = new SolidColorBrush(Color.Parse("#4d6caf"));
         var textBrush = new SolidColorBrush(Color.Parse("#1F2937"));
         var axisPen = new Pen(axisBrush, 1);
 
