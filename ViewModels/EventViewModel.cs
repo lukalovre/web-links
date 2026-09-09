@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
@@ -13,8 +14,15 @@ public partial class EventViewModel : ViewModelBase
     private bool _isEditDate;
     private TimeSpan _time;
     private DateTime _date;
+    private IReadOnlyList<YearlyEventCount> _yearlyEventCounts = [];
 
     public ObservableCollection<Event> Events { get; set; }
+
+    public IReadOnlyList<YearlyEventCount> YearlyEventCounts
+    {
+        get => _yearlyEventCounts;
+        private set => this.RaiseAndSetIfChanged(ref _yearlyEventCounts, value);
+    }
 
     public DateTime Date
     {
@@ -55,6 +63,12 @@ public partial class EventViewModel : ViewModelBase
     private void CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         var events = sender as ObservableCollection<Event>;
+        YearlyEventCounts = events?
+            .GroupBy(itemEvent => itemEvent.Date.Year)
+            .OrderBy(group => group.Key)
+            .Select(group => new YearlyEventCount(group.Key, group.Count()))
+            .ToList() ?? [];
+
         SelectedEvent = events?.MaxBy(o => o.Date)!;
 
         if (SelectedEvent == null)
@@ -66,3 +80,5 @@ public partial class EventViewModel : ViewModelBase
         _time = _date.TimeOfDay;
     }
 }
+
+public record YearlyEventCount(int Year, int Count);

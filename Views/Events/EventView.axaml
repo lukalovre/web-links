@@ -18,6 +18,7 @@
 						<CheckBox IsChecked="{Binding IsEditDate}" />
 						<TextBox Text="{Binding SelectedEvent.Date, Converter={StaticResource DateTimeToStringConverter}, ConverterParameter=yyyy-MM-dd HH:mm:ss}}" />
 					</StackPanel>
+					<view:EventYearGraph Items="{Binding YearlyEventCounts}" Height="180" />
 				</StackPanel>
 			</TabItem>
 		</TabControl>
