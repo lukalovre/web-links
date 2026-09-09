@@ -42,6 +42,7 @@ public class LinksViewModel : ViewModelBase, IDataGrid
         EventViewModel = new EventViewModel(Events);
 
         AddItemClick = ReactiveCommand.Create(AddItemClickAction);
+        SaveItem = ReactiveCommand.Create(SaveItemAction);
         OpenLink = ReactiveCommand.Create(OpenLinkAction);
         Unfollow = ReactiveCommand.Create(UnfollowAction);
         OpenImage = ReactiveCommand.CreateFromTask(OpenImageAction);
@@ -123,6 +124,7 @@ public class LinksViewModel : ViewModelBase, IDataGrid
     public ObservableCollection<Event> Events { get; set; }
 
     public ReactiveCommand<Unit, Unit> AddItemClick { get; }
+    public ReactiveCommand<Unit, Unit> SaveItem { get; }
     public ReactiveCommand<Unit, Unit> OpenLink { get; }
     public ReactiveCommand<Unit, Unit> Unfollow { get; }
     public ReactiveCommand<Unit, Unit> OpenImage { get; }
@@ -286,6 +288,17 @@ public class LinksViewModel : ViewModelBase, IDataGrid
 
         ReloadData();
         ClearNewItemControls();
+    }
+
+    private void SaveItemAction()
+    {
+        if (SelectedItem is null)
+        {
+            return;
+        }
+
+        _datasource.Update(SelectedItem);
+        ReloadData();
     }
 
     protected virtual void ReloadData()

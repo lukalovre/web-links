@@ -67,7 +67,19 @@
 				</ScrollViewer>
 			</TabItem>
 			<TabItem Header="Edit">
-				<TextBlock Text="Event" />
+				<ScrollViewer>
+					<StackPanel Margin="10">
+						<TextBlock Text="ID" />
+						<TextBlock Text="{Binding SelectedItem.ID}" Margin="0,0,0,10" />
+						<TextBlock Text="Title" />
+						<TextBox Text="{Binding SelectedItem.Title}" Margin="0,0,0,10" />
+						<TextBlock Text="Url" />
+						<TextBox Text="{Binding SelectedItem.Url}" Margin="0,0,0,10" />
+						<TextBlock Text="Category" />
+						<ComboBox ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedItem.Category}" Margin="0,0,0,10" />
+						<Button Command="{Binding SaveItem}" HorizontalAlignment="Left">Save</Button>
+					</StackPanel>
+				</ScrollViewer>
 			</TabItem>
 		</TabControl>
 	</DockPanel>

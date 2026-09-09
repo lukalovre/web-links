@@ -155,7 +155,15 @@ internal class TsvDatasource : IDatasource
 
     public void Update<T>(T item) where T : IItem
     {
-        var events = GetEventList<T>();
+        var items = GetList<T>(Helpers.GetClassName<T>());
+        var existingItem = items.FirstOrDefault(o => o.ID == item.ID);
+
+        if (existingItem is null)
+        {
+            return;
+        }
+
+        items[items.IndexOf(existingItem)] = item;
 
         // var items = GetList<Game>();
 
@@ -204,13 +212,13 @@ internal class TsvDatasource : IDatasource
         //     Delimiter = "\t"
         // };
 
-        var itemFilePath = GetEventFilePath<T>();
+        var itemFilePath = GetFilePath<T>();
         using var writer = new StreamWriter(itemFilePath, false, System.Text.Encoding.UTF8);
         using var csvText = new CsvWriter(writer, _config);
         var options = new TypeConverterOptions { Formats = ["yyyy-MM-dd HH:mm:ss"] };
         csvText.Context.TypeConverterOptionsCache.AddOptions<DateTime>(options);
         csvText.Context.TypeConverterOptionsCache.AddOptions<DateTime?>(options);
-        csvText.WriteRecords(events);
+        csvText.WriteRecords(items);
         writer.Flush();
     }
 
