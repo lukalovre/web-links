@@ -1,6 +1,11 @@
 <UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:vm="using:WebLinks.ViewModels" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:uc="clr-namespace:WebLinks.Views;assembly=WebLinks" mc:Ignorable="d" x:DataType="vm:EventViewModel" x:Class="WebLinks.Views.EventView" xmlns:view="using:WebLinks.Views" x:CompileBindings="True">
 	<Border Background="{StaticResource AccentBrush}" BorderBrush="Black" BorderThickness="2" CornerRadius="3" Padding="10" Margin="10">
 		<TabControl>
+			<TabItem Header="Stats">
+				<StackPanel Height="240">
+					<view:EventYearGraph Items="{Binding YearlyEventCounts}" Height="180" />
+				</StackPanel>
+			</TabItem>
 			<TabItem Header="Event">
 				<StackPanel Height="240">
 					<ComboBox ItemsSource="{Binding Events}" SelectedItem="{Binding SelectedEvent}" Margin="0,0,0,10">
@@ -10,11 +15,6 @@
 							</DataTemplate>
 						</ComboBox.ItemTemplate>
 					</ComboBox>
-				</StackPanel>
-			</TabItem>
-			<TabItem Header="Stats">
-				<StackPanel Height="240">
-					<view:EventYearGraph Items="{Binding YearlyEventCounts}" Height="180" />
 				</StackPanel>
 			</TabItem>
 		</TabControl>
