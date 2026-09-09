@@ -1,7 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:vm="using:WebLinks.ViewModels" x:Class="WebLinks.Views.StatsView" x:DataType="vm:StatsViewModel" x:CompileBindings="True">
     <DockPanel>
         <Button Content="Refresh" Command="{Binding Refresh}" DockPanel.Dock="Top" HorizontalAlignment="Left" Margin="5" />
-        <DataGrid Margin="5" ItemsSource="{Binding TopWebpages}" IsReadOnly="True" GridLinesVisibility="All" BorderThickness="2" BorderBrush="LimeGreen">
+        <DataGrid Margin="5" ItemsSource="{Binding TopWebpages}" IsReadOnly="True" GridLinesVisibility="All" BorderThickness="2" BorderBrush="{StaticResource AccentBrush}">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Rank}" Header="#" Width="55" />
                 <DataGridTextColumn Binding="{Binding Title}" Header="Title" Width="*" />

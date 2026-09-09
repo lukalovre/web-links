@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Avalonia.Media;
 using Newtonsoft.Json;
 using Repositories;
 
@@ -10,6 +11,9 @@ public class Settings
 {
 
     public string DatasourcePath { get; set; } = string.Empty;
+    public string AccentColor { get; set; } = "LimeGreen";
+
+    public static Color AccentColorValue => Color.Parse(Instance.AccentColor);
 
     public Dictionary<string, ItemSettingsJson> ItemSettings { get; set; } = [];
 
