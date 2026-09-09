@@ -29,17 +29,30 @@
 		<TabControl Margin="5">
 			<TabItem Header="Info">
 				<ScrollViewer>
-					<StackPanel>
-						<StackPanel Orientation="Horizontal">
-							<Button Command="{Binding OpenLink}" Margin="15">Open</Button>
-							<Button Command="{Binding Unfollow}" Margin="15">Unfollow</Button>
+					<StackPanel Margin="8" Spacing="12">
+						<Border Background="{StaticResource AccentBrush}" CornerRadius="4" Padding="16,14">
+							<StackPanel>
+								<TextBlock Text="{Binding SelectedItem.Title}" FontSize="22" FontWeight="SemiBold" Foreground="White" TextWrapping="Wrap" />
+								<TextBlock Text="{Binding SelectedItem.Category}" FontSize="12" Foreground="#E8F5E9" Margin="0,5,0,0" />
+							</StackPanel>
+						</Border>
+						<Border Background="#17211B" BorderBrush="#34473A" BorderThickness="1" CornerRadius="4" Padding="14">
+							<Grid ColumnDefinitions="86,*" RowDefinitions="Auto,Auto">
+								<TextBlock Text="CATEGORY" FontSize="10" FontWeight="Bold" Foreground="#A8B8AC" />
+								<TextBlock Grid.Column="1" Text="{Binding SelectedItem.Category}" Foreground="#F2F7F3" TextWrapping="Wrap" />
+								<TextBlock Grid.Row="1" Text="ADDRESS" FontSize="10" FontWeight="Bold" Foreground="#A8B8AC" Margin="0,10,0,0" />
+								<TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectedItem.Url}" ToolTip.Tip="{Binding SelectedItem.Url}" Foreground="#F2F7F3" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" Margin="0,10,0,0" />
+							</Grid>
+						</Border>
+						<Border Background="#17211B" BorderBrush="#34473A" BorderThickness="1" CornerRadius="4" Padding="8" HorizontalAlignment="Center">
+							<Button Command="{Binding OpenImage}" Background="Transparent" BorderThickness="0" Padding="0">
+								<Image Source="{Binding Image}" Width="350" Height="220" Stretch="UniformToFill" />
+							</Button>
+						</Border>
+						<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="8">
+							<Button Command="{Binding OpenLink}" Padding="18,8">Open link</Button>
+							<Button Command="{Binding Unfollow}" Padding="18,8">Unfollow</Button>
 						</StackPanel>
-						<TextBlock Text="{Binding SelectedItem.Title}" />
-						<TextBlock Text="{Binding SelectedItem.Url}" />
-						<TextBlock Text="{Binding SelectedItem.Category}" />
-						<Button Command="{Binding OpenImage}">
-							<Image Source="{Binding Image}" Width="350" Height="350" />
-						</Button>
 						<view:EventView DataContext="{Binding EventViewModel}" />
 					</StackPanel>
 				</ScrollViewer>
