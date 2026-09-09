@@ -49,11 +49,11 @@
 					<StackPanel>
 						<StackPanel Orientation="Horizontal">
 							<Button Command="{Binding AddItemClick}" Margin="15">Add</Button>
-							<TextBox Watermark="Paste url" Text="{Binding InputUrl}" Margin="15" />
+							<TextBox PlaceholderText="Paste url" Text="{Binding InputUrl}" Margin="15" />
 						</StackPanel>
 						<StackPanel>
-							<TextBox Watermark="Title" Text="{Binding NewItem.Title}" />
-							<TextBox Watermark="Url" Text="{Binding NewItem.Url}" />
+							<TextBox PlaceholderText="Title" Text="{Binding NewItem.Title}" />
+							<TextBox PlaceholderText="Url" Text="{Binding NewItem.Url}" />
 							<ComboBox ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}" Margin="0,0,0,10"/>
 						</StackPanel>
 						<Button>
